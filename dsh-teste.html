@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testes Calculadora Maria Fernanda Silva</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #dce6f5, #da78d3);
+            min-height: 100vh;
+            padding: 30px 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        header {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            color: #e332ce;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .resumo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        .card h2 {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .total h2 {
+            color: #70228d;
+        }
+
+        .aprovados h2 {
+            color: #8a2477;
+        }
+
+        .falhas h2 {
+            color: #dc3545;
+        }
+
+        .card p {
+            color: #666;
+        }
+
+        .tabela {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            overflow-x: auto;
+        }
+
+        .tabela h2 {
+            color: #e332ce;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th {
+            background-color: #8a2477;
+            color: white;
+            padding: 14px;
+        }
+
+        td {
+            padding: 13px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background-color: #fdf0fc;
+        }
+
+        .passou {
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .falhou {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .botao {
+            width: 100%;
+            margin-top: 20px;
+            padding: 13px;
+            background-color: #b30bc2;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .botao:hover {
+            background-color: #ac1082;
+            transform: scale(1.01);
+        }
+
+        .informacoes {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            line-height: 1.8;
+        }
+
+        .informacoes h3 {
+            color: #70228d;
+            margin-bottom: 12px;
+        }
+
+        #conclusao {
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #333;
+            font-size: 13px;
+        }
+
+        @media (max-width: 650px) {
+            .resumo {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 22px;
+            }
+
+            .tabela, .informacoes {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Dashboard de Testes</h1>
+        <p>Calculadora Matemática</p>
+        <p>
+            Relatório de verificação das operações
+            e funções da calculadora, incluindo testes funcionais,
+            validação de dados e testes de interface.
+        </p>
+    </header>
+
+    <section class="resumo">
+
+        <div class="card total">
+            <h2 id="total">0</h2>
+            <p>Total de Testes</p>
+        </div>
+
+        <div class="card aprovados">
+            <h2 id="aprovados">0</h2>
+            <p>Testes Aprovados</p>
+        </div>
+
+        <div class="card falhas">
+            <h2 id="falhas">0</h2>
+            <p>Testes com Falhas</p>
+        </div>
+
+    </section>
+
+    <section class="tabela">
+
+        <h2>Resultados dos Testes</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Operação / Cenário</th>
+                    <th>Valores</th>
+                    <th>Esperado</th>
+                    <th>Obtido</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="corpoTabela"></tbody>
+
+        </table>
+
+        <button class="botao" onclick="executarTestes()">
+            Executar Testes Novamente
+        </button>
+
+    </section>
+
+    <section class="informacoes">
+
+        <h3>Informações do Sistema</h3>
+
+        <p>
+            <strong>Programa:</strong>
+            Calculadora Matemática
+        </p>
+
+        <p>
+            <strong>Linguagens utilizadas:</strong>
+            HTML, CSS e JavaScript.
+        </p>
+
+        <p>
+            <strong>Operações testadas:</strong>
+            Adição, subtração, multiplicação,
+            divisão, potência e raiz quadrada.
+        </p>
+
+        <p>
+            <strong>Objetivo:</strong>
+            Verificar os resultados das operações
+            e identificar possíveis falhas.
+        </p>
+
+        <p>
+            <strong>Tipo de teste:</strong>
+            Testes funcionais, validação de dados
+            e testes de interface.
+        </p>
+
+        <p>
+            <strong>Observação:</strong>
+            Os testes de interface foram registrados
+            conforme os resultados informados no plano
+            de teste. Eles não são executados
+            automaticamente pelo JavaScript desta página.
+        </p>
+
+        <p id="conclusao">
+            Aguardando execução dos testes.
+        </p>
+
+    </section>
+
+    <footer>
+        © 2026 Calculadora.
+        Todos os direitos reservados.
+    </footer>
+
+</div>
+
+<script>
+
+    // OBJETO DA CALCULADORA
+    // Cada operação é um método do objeto. Quando existir um objeto
+    // "calculator" vindo de um script.js, ele será usado no lugar deste.
+
+    const calculadoraLocal = {
+
+        // Converte o valor recebido em número ou lança um erro
+        converter(valor, posicao) {
+
+            if (valor === "" || valor === null || valor === undefined) {
+                throw new Error(posicao + " número não informado");
+            }
+
+            const numero = Number(valor);
+
+            if (!Number.isFinite(numero)) {
+                throw new Error(posicao + " número inválido");
+            }
+
+            return numero;
+        },
+
+        soma(a, b) {
+            return this.converter(a, "Primeiro") + this.converter(b, "Segundo");
+        },
+
+        subtracao(a, b) {
+            return this.converter(a, "Primeiro") - this.converter(b, "Segundo");
+        },
+
+        multiplicacao(a, b) {
+            return this.converter(a, "Primeiro") * this.converter(b, "Segundo");
+        },
+
+        divisao(a, b) {
+
+            const n1 = this.converter(a, "Primeiro");
+            const n2 = this.converter(b, "Segundo");
+
+            if (n2 === 0) {
+                throw new Error("Divisão por zero");
+            }
+
+            return n1 / n2;
+        },
+
+        potencia(a, b) {
+            return Math.pow(this.converter(a, "Primeiro"), this.converter(b, "Segundo"));
+        },
+
+        raiz(a) {
+
+            const n1 = this.converter(a, "Primeiro");
+
+            if (n1 < 0) {
+                throw new Error("Raiz de número negativo");
+            }
+
+            return Math.sqrt(n1);
+        }
+    };
+
+    // Garante que o objeto "calc" exista.
+    // Se houver um "calculator" global (vindo de um script.js), usamos ele;
+    // caso contrário, usamos a calculadora local definida acima.
+    const calc = window.calculator || calculadoraLocal;
+
+
+    // Definição dos cenários baseando-se em Requisitos (Cálculos) e Bloqueios (Erros)
+    // type "req"    -> a operação deve devolver o valor em "expected"
+    // type "block"  -> a operação deve lançar o erro em "error"
+    // type "manual" -> resultado registrado à mão (não roda no JavaScript)
+
+    const testSuites = [
+
+        // REQUISITOS FUNCIONAIS
+        { id: "RF-01", type: "req", name: "Soma básica de positivos", op: "soma", args: ["5", "3"], expected: 8 },
+        { id: "RF-02", type: "req", name: "Subtração gerando negativo", op: "subtracao", args: ["3", "10"], expected: -7 },
+        { id: "RF-03", type: "req", name: "Multiplicação com negativo", op: "multiplicacao", args: ["-8", "2"], expected: -16 },
+        { id: "RF-04", type: "req", name: "Divisão exata comum", op: "divisao", args: ["20", "4"], expected: 5 },
+        { id: "RF-05", type: "req", name: "Potenciação com expoente decimal", op: "potencia", args: ["9", "0.5"], expected: 3 },
+        { id: "RF-06", type: "req", name: "Raiz quadrada exata", op: "raiz", args: ["25"], expected: 5 },
+        { id: "RF-07", type: "req", name: "Potenciação normal", op: "potencia", args: ["2", "3"], expected: 8 },
+        { id: "RF-08", type: "req", name: "Adição de decimais", op: "soma", args: ["5.5", "2.15"], expected: 7.65 },
+        { id: "RF-09", type: "req", name: "Divisão com dízima periódica", op: "divisao", args: ["10", "3"], expected: 3.3333333333, tolerance: 0.000001 },
+
+        // BLOQUEIOS DE ERROS DO USUÁRIO
+        { id: "RE-01", type: "block", name: "Bloqueio: Divisão por zero", op: "divisao", args: ["15", "0"], error: "Divisão por zero" },
+        { id: "RE-02", type: "block", name: "Bloqueio: Primeiro campo vazio", op: "multiplicacao", args: ["", "4"], error: "Primeiro número não informado" },
+        { id: "RE-03", type: "block", name: "Bloqueio: Entrada de letras", op: "soma", args: ["abc", "5"], error: "Primeiro número inválido" },
+        { id: "RE-04", type: "block", name: "Bloqueio: Raiz de número negativo", op: "raiz", args: ["-4"], error: "Raiz de número negativo" },
+
+        // TESTES MANUAIS (registrados conforme o plano de teste)
+        {
+            id: "RE-05", type: "manual", name: "Nenhuma operação selecionada",
+            values: "10 [sem operação] 10",
+            expectedText: "Exibir aviso: Selecione uma operação",
+            gotText: "Aguardando a operação; nenhum resultado foi gerado",
+            passed: false
+        },
+        {
+            id: "UI-01", type: "manual", name: "Botão limpar",
+            values: "Campos preenchidos",
+            expectedText: "Limpar campos, operação e resultado",
+            gotText: "Limpa todos os campos",
+            passed: true
+        },
+        {
+            id: "UI-02", type: "manual", name: "Atualização do resultado",
+            values: "Após clicar na operação",
+            expectedText: "Atualizar o resultado após o clique",
+            gotText: "O resultado atualiza imediatamente",
+            passed: true
+        },
+        {
+            id: "UI-03", type: "manual", name: "Responsividade",
+            values: "Computador e dispositivos móveis",
+            expectedText: "Layout adaptável",
+            gotText: "Sim, funciona",
+            passed: true
+        }
+    ];
+
+
+    // FUNÇÕES AUXILIARES
+
+    function formatarValor(valor) {
+
+        if (typeof valor !== "number") {
+            return valor;
+        }
+
+        return Number(valor.toFixed(10)).toString();
+    }
+
+    // Executa um teste e devolve { passed, got, expected, values }
+    function rodarTeste(teste) {
+
+        // Testes manuais: usa o resultado registrado
+        if (teste.type === "manual") {
+            return {
+                passed: teste.passed,
+                got: teste.gotText,
+                expected: teste.expectedText,
+                values: teste.values
+            };
+        }
+
+        const values = teste.args.length === 1
+            ? teste.args[0]
+            : teste.args.join(" e ");
+
+        // Teste de requisito: deve devolver o valor esperado
+        if (teste.type === "req") {
+
+            const tolerance = teste.tolerance || 0.0000001;
+
+            try {
+
+                const resultado = calc[teste.op](...teste.args);
+
+                return {
+                    passed: Number.isFinite(resultado) &&
+                            Math.abs(resultado - teste.expected) < tolerance,
+                    got: formatarValor(resultado),
+                    expected: formatarValor(teste.expected),
+                    values: values
+                };
+
+            } catch (erro) {
+
+                return {
+                    passed: false,
+                    got: erro.message,
+                    expected: formatarValor(teste.expected),
+                    values: values
+                };
+            }
+        }
+
+        // Teste de bloqueio: deve lançar o erro esperado
+        try {
+
+            const resultado = calc[teste.op](...teste.args);
+
+            return {
+                passed: false,
+                got: "Sem erro (resultado: " + formatarValor(resultado) + ")",
+                expected: "Erro: " + teste.error,
+                values: values
+            };
+
+        } catch (erro) {
+
+            return {
+                passed: erro.message === teste.error,
+                got: erro.message,
+                expected: "Erro: " + teste.error,
+                values: values
+            };
+        }
+    }
+
+
+    // EXECUÇÃO DOS TESTES
+
+    function executarTestes() {
+
+        let aprovados = 0;
+        let falhas = 0;
+
+        const tabela =
+            document.getElementById("corpoTabela");
+
+        tabela.innerHTML = "";
+
+        testSuites.forEach(teste => {
+
+            const r = rodarTeste(teste);
+
+            if (r.passed) {
+                aprovados++;
+            } else {
+                falhas++;
+            }
+
+            const linha = document.createElement("tr");
+
+            linha.innerHTML = `
+                <td>${teste.id}</td>
+                <td>${teste.name}</td>
+                <td>${r.values}</td>
+                <td>${r.expected}</td>
+                <td>${r.got}</td>
+                <td class="${r.passed ? "passou" : "falhou"}">
+                    ${r.passed ? "APROVADO" : "FALHOU"}
+                </td>
+            `;
+
+            tabela.appendChild(linha);
+
+        });
+
+
+        document.getElementById("total").textContent =
+            testSuites.length;
+
+        document.getElementById("aprovados").textContent =
+            aprovados;
+
+        document.getElementById("falhas").textContent =
+            falhas;
+
+        const conclusao =
+            document.getElementById("conclusao");
+
+        if (falhas === 0) {
+
+            conclusao.textContent =
+                "Resultado final: todos os testes foram aprovados!";
+
+            conclusao.style.color = "#198754";
+
+        } else {
+
+            conclusao.textContent =
+                "Resultado final: " + aprovados +
+                " teste(s) aprovado(s) e " + falhas +
+                " teste(s) com falha. Revise os itens sinalizados.";
+
+            conclusao.style.color = "#dc3545";
+
+        }
+
+    }
+
+    executarTestes();
+
+</script>
+
+</body>
+</html>
